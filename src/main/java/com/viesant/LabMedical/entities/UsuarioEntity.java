@@ -15,6 +15,7 @@ import java.time.LocalDate;
 import java.util.Set;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Entity
 @Getter
@@ -46,4 +47,8 @@ public class UsuarioEntity {
           joinColumns = @JoinColumn(name = "usuario_id"),
           inverseJoinColumns = @JoinColumn(name = "perfil_id"))
   private Set<PerfilEntity> perfil;
+
+  public boolean isLoginCorrect(String senha, PasswordEncoder passwordEncoder) {
+    return passwordEncoder.matches(senha, this.password);
+  }
 }
