@@ -1,0 +1,22 @@
+meta {
+  name: LoginBad
+  type: http
+  seq: 4
+}
+
+post {
+  url: http://localhost:8080/login
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "usuario" : "admin",
+    "senha": "123123"
+  }
+}
+
+vars:post-response {
+  accessToken: res.body.token
+}

@@ -1,0 +1,26 @@
+meta {
+  name: create Medico
+  type: http
+  seq: 2
+}
+
+post {
+  url: http://localhost:8080/usuarios
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{accessToken}}
+}
+
+body:json {
+  {
+    "nome": "Dr. Ricardo",
+    "email": "medico1@viesant.com",
+    "dataNascimento": "1990-05-15",
+    "cpf": "000.111.000-00",
+    "password": "1234",
+    "perfil": "MEDICO"
+  }
+}

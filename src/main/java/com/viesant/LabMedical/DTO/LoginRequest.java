@@ -1,3 +1,8 @@
 package com.viesant.LabMedical.DTO;
 
-public record LoginRequest(String usuario, String senha) {}
+import jakarta.validation.constraints.NotEmpty;
+
+public record LoginRequest(
+        @NotEmpty(message = "Usuário é obrigatório") String usuario,
+        @NotEmpty(message = "Senha é obrigatória") String senha
+) {}
