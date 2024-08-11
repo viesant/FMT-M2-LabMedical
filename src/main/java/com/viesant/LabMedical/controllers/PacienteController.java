@@ -1,6 +1,7 @@
 package com.viesant.LabMedical.controllers;
 
 import com.viesant.LabMedical.DTO.PacienteRequest;
+import com.viesant.LabMedical.entities.PacienteEntity;
 import com.viesant.LabMedical.services.PacienteService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -22,8 +23,9 @@ public class PacienteController {
 
   @PostMapping
   @PreAuthorize("hasAnyAuthority('SCOPE_ADMIN','SCOPE_MEDICO')")
-  public ResponseEntity<PacienteRequest> novoPaciente(
+  public ResponseEntity<PacienteEntity> novoPaciente(
       @Valid @RequestBody PacienteRequest pacienteRequest) {
-    return new ResponseEntity<>(pacienteRequest, HttpStatus.CREATED);
+
+    return new ResponseEntity<>(pacienteService.novoPaciente(pacienteRequest), HttpStatus.CREATED);
   }
 }

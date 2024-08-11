@@ -20,10 +20,13 @@ import lombok.Setter;
 @Setter
 @Table(name = "paciente")
 public class PacienteEntity {
+
   @Embedded DadosPessoais dadosPessoais;
+
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
+
   @Embedded private Saude saude;
 
   @Embedded private Endereco endereco;
@@ -35,7 +38,7 @@ public class PacienteEntity {
   @Embeddable
   @Getter
   @Setter
-  public class DadosPessoais {
+  public static class DadosPessoais {
     @Column(nullable = false, length = 64)
     private String nome;
 
@@ -66,7 +69,7 @@ public class PacienteEntity {
   @Embeddable
   @Getter
   @Setter
-  public class Saude {
+  public static class Saude {
     @Column(nullable = false)
     private String telefoneContato;
 
@@ -84,7 +87,7 @@ public class PacienteEntity {
   @Embeddable
   @Getter
   @Setter
-  public class Endereco {
+  public static class Endereco {
 
     @Column(nullable = false)
     private String cep;
