@@ -4,13 +4,13 @@ import com.sun.jdi.request.DuplicateRequestException;
 import com.viesant.LabMedical.DTO.PacienteRequest;
 import com.viesant.LabMedical.entities.PacienteEntity;
 import com.viesant.LabMedical.entities.UsuarioEntity;
+import com.viesant.LabMedical.mappers.PacienteMapper;
 import com.viesant.LabMedical.repositories.PacienteRepository;
 import com.viesant.LabMedical.repositories.UsuarioRepository;
 import jakarta.persistence.EntityNotFoundException;
-import java.util.List;
 import java.util.Optional;
 import lombok.AllArgsConstructor;
-import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -29,55 +29,39 @@ public class PacienteService {
 
       throw new EntityNotFoundException("Usuário não tem o perfil de paciente.");
     }
-    if (pacienteRepository.findByUsuario_Id(pacienteRequest.usuarioId()).isPresent() ){
+    if (pacienteRepository.findByUsuario_Id(pacienteRequest.usuarioId()).isPresent()) {
       throw new DuplicateRequestException("Já existe paciente com este usuario");
     }
-    if (pacienteRepository.findByDadosPessoaisCpf(pacienteRequest.dadosPessoais().cpf()).isPresent()){
+    if (pacienteRepository
+        .findByDadosPessoaisCpf(pacienteRequest.dadosPessoais().cpf())
+        .isPresent()) {
       throw new DuplicateRequestException("Já existe paciente com este cpf");
     }
 
-    PacienteEntity novoPaciente = new PacienteEntity();
-    PacienteEntity.DadosPessoais dadosPessoais = new PacienteEntity.DadosPessoais();
-
-    dadosPessoais.setNome(pacienteRequest.dadosPessoais().nome());
-    dadosPessoais.setGenero(pacienteRequest.dadosPessoais().genero());
-    dadosPessoais.setDataNascimento(pacienteRequest.dadosPessoais().dataNascimento());
-    dadosPessoais.setCpf(pacienteRequest.dadosPessoais().cpf());
-    dadosPessoais.setRg(pacienteRequest.dadosPessoais().rg());
-    dadosPessoais.setEstadoCivil(pacienteRequest.dadosPessoais().estadoCivil());
-    dadosPessoais.setTelefone(pacienteRequest.dadosPessoais().telefone());
-    dadosPessoais.setEmail(pacienteRequest.dadosPessoais().email());
-    dadosPessoais.setNaturalidade(pacienteRequest.dadosPessoais().naturalidade());
-    novoPaciente.setDadosPessoais(dadosPessoais);
-
-    PacienteEntity.Saude saude = new PacienteEntity.Saude();
-    saude.setTelefoneContato(pacienteRequest.saude().telefoneContato());
-    saude.setAlergias(
-        pacienteRequest.saude().alergias() != null
-            ? pacienteRequest.saude().alergias()
-            : List.of());
-    saude.setCuidados(
-        pacienteRequest.saude().cuidados() != null
-            ? pacienteRequest.saude().cuidados()
-            : List.of());
-    saude.setNomeConvenio(pacienteRequest.saude().nomeConvenio());
-    saude.setNumeroConvenio(pacienteRequest.saude().numeroConvenio());
-    saude.setValidadeConvenio(pacienteRequest.saude().validadeConvenio());
-    novoPaciente.setSaude(saude);
-
-    PacienteEntity.Endereco endereco = new PacienteEntity.Endereco();
-    endereco.setCep(pacienteRequest.endereco().cep());
-    endereco.setCidade(pacienteRequest.endereco().cidade());
-    endereco.setEstado(pacienteRequest.endereco().estado());
-    endereco.setLogradouro(pacienteRequest.endereco().logradouro());
-    endereco.setNumero(pacienteRequest.endereco().numero());
-    endereco.setComplemento(pacienteRequest.endereco().complemento());
-    endereco.setBairro(pacienteRequest.endereco().bairro());
-    endereco.setPontoReferencia(pacienteRequest.endereco().pontoReferencia());
-    novoPaciente.setEndereco(endereco);
+    PacienteEntity novoPaciente = PacienteMapper.map(pacienteRequest);
 
     novoPaciente.setUsuario(usuario.get());
 
     return pacienteRepository.save(novoPaciente);
+  }
+
+  public PacienteEntity buscaPacientePorId(Long id, JwtAuthenticationToken token) {
+
+    UsuarioEntity usuario =
+        usuarioRepository
+            .findByEmail(token.getName())
+            .orElseThrow(() -> new EntityNotFoundException("Usuario do token não encontrado"));
+
+    if (usuario.getPerfil().stream().anyMatch(perfil -> "PACIENTE".equals(perfil.getNome()))) {
+      PacienteEntity paciente =
+          pacienteRepository
+              .findByUsuario_Id(usuario.getId())
+              .orElseThrow(() -> new EntityNotFoundException("Usuário não associado a paciente"));
+      if (!paciente.getId().equals(id)) {
+        throw new EntityNotFoundException("PACIENTE só pode acessar o próprio ID.");
+      }
+    }
+
+    return pacienteRepository.findById(id).orElseThrow(EntityNotFoundException::new);
   }
 }
