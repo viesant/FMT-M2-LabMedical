@@ -25,7 +25,7 @@ public class LoginService {
 
 
   public LoginResponse login(LoginRequest login) {
-    Optional<UsuarioEntity> usuario = usuarioRepository.findByNome(login.usuario());
+    Optional<UsuarioEntity> usuario = usuarioRepository.findByEmail(login.usuario());
 
     if (usuario.isEmpty() || !usuario.get().isLoginCorrect(login.senha(), passwordEncoder)) {
       throw new BadCredentialsException("Invalid usuario or senha");
