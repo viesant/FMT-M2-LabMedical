@@ -1,15 +1,20 @@
 package com.viesant.LabMedical.services;
 
+import static com.viesant.LabMedical.mappers.PacienteMapper.map;
+
 import com.sun.jdi.request.DuplicateRequestException;
+import com.viesant.LabMedical.DTO.PacienteGetRequest;
 import com.viesant.LabMedical.DTO.PacienteRequest;
+import com.viesant.LabMedical.DTO.PacienteResponse;
 import com.viesant.LabMedical.entities.PacienteEntity;
 import com.viesant.LabMedical.entities.UsuarioEntity;
-import com.viesant.LabMedical.mappers.PacienteMapper;
 import com.viesant.LabMedical.repositories.PacienteRepository;
 import com.viesant.LabMedical.repositories.UsuarioRepository;
 import jakarta.persistence.EntityNotFoundException;
 import java.util.Optional;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.stereotype.Service;
 
@@ -38,7 +43,7 @@ public class PacienteService {
       throw new DuplicateRequestException("Já existe paciente com este cpf");
     }
 
-    PacienteEntity novoPaciente = PacienteMapper.map(pacienteRequest);
+    PacienteEntity novoPaciente = map(pacienteRequest);
 
     novoPaciente.setUsuario(usuario.get());
 
@@ -71,7 +76,7 @@ public class PacienteService {
             .findById(id)
             .orElseThrow(() -> new EntityNotFoundException("Paciente não encontrado com id " + id));
 
-    PacienteEntity pacienteEdicao = PacienteMapper.map(pacienteRequest);
+    PacienteEntity pacienteEdicao = map(pacienteRequest);
     pacienteEntity.setDadosPessoais(pacienteEdicao.getDadosPessoais());
     pacienteEntity.setSaude(pacienteEdicao.getSaude());
     pacienteEntity.setEndereco(pacienteEdicao.getEndereco());
@@ -81,11 +86,20 @@ public class PacienteService {
 
   public void deletaPacientePorId(Long id) {
     PacienteEntity pacienteEntity =
-            pacienteRepository
-                    .findById(id)
-                    .orElseThrow(() -> new EntityNotFoundException("Paciente não encontrado com id " + id));
+        pacienteRepository
+            .findById(id)
+            .orElseThrow(() -> new EntityNotFoundException("Paciente não encontrado com id " + id));
     pacienteRepository.deleteById(id);
+  }
 
-    return;
+  public Page<PacienteResponse> listaPacientes(PacienteGetRequest filtros, Pageable paginacao) {
+
+    String filtroNome = filtros.nome() != null ? filtros.nome() : "";
+    String filtroTelefone = filtros.telefone() != null ? filtros.telefone() : "";
+    String filtroEmail = filtros.email() != null ? filtros.telefone() : "";
+    return map(
+        pacienteRepository
+            .findByNomeContainingIgnoreCaseAndTelefoneContainingAndEmailContainingIgnoreCase(
+                filtroNome, filtroTelefone, filtroEmail, paginacao));
   }
 }

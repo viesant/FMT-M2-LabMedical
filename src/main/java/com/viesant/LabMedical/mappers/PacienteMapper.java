@@ -1,7 +1,10 @@
 package com.viesant.LabMedical.mappers;
 
 import com.viesant.LabMedical.DTO.PacienteRequest;
+import com.viesant.LabMedical.DTO.PacienteResponse;
 import com.viesant.LabMedical.entities.PacienteEntity;
+import org.springframework.data.domain.Page;
+
 import java.util.List;
 
 public class PacienteMapper {
@@ -42,5 +45,20 @@ public class PacienteMapper {
     target.setEndereco(endereco);
     
     return target;
+  }
+
+  public static PacienteResponse map(PacienteEntity source){
+    PacienteResponse target = new PacienteResponse(
+            source.getDadosPessoais().getNome(),
+            37,
+            //source.getDadosPessoais().getDataNascimento(),
+            source.getDadosPessoais().getTelefone(),
+            source.getSaude().getNomeConvenio()
+            );
+    return target;
+  }
+
+  public static Page<PacienteResponse> map (Page<PacienteEntity> source){
+    return source.map(PacienteMapper::map);
   }
 }

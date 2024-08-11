@@ -1,10 +1,14 @@
 package com.viesant.LabMedical.controllers;
 
+import com.viesant.LabMedical.DTO.PacienteGetRequest;
 import com.viesant.LabMedical.DTO.PacienteRequest;
+import com.viesant.LabMedical.DTO.PacienteResponse;
 import com.viesant.LabMedical.entities.PacienteEntity;
 import com.viesant.LabMedical.services.PacienteService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -52,5 +56,12 @@ public class PacienteController {
                                                            ){
     pacienteService.deletaPacientePorId(id);
     return ResponseEntity.noContent().build();
+  }
+
+  @GetMapping
+  @PreAuthorize("hasAnyAuthority('SCOPE_ADMIN','SCOPE_MEDICO')")
+  public ResponseEntity<Page<PacienteResponse>> listaPacientes  (PacienteGetRequest filtro, Pageable paginacao){
+
+    return ResponseEntity.ok(PacienteService.listaPacientes(filtro, paginacao));
   }
 }
