@@ -64,4 +64,18 @@ public class PacienteService {
 
     return pacienteRepository.findById(id).orElseThrow(EntityNotFoundException::new);
   }
+
+  public PacienteEntity editaPacientePorId(Long id, PacienteRequest pacienteRequest) {
+    PacienteEntity pacienteEntity =
+        pacienteRepository
+            .findById(id)
+            .orElseThrow(() -> new EntityNotFoundException("Paciente não encontrado com id " + id));
+
+    PacienteEntity pacienteEdicao = PacienteMapper.map(pacienteRequest);
+    pacienteEntity.setDadosPessoais(pacienteEdicao.getDadosPessoais());
+    pacienteEntity.setSaude(pacienteEdicao.getSaude());
+    pacienteEntity.setEndereco(pacienteEdicao.getEndereco());
+
+    return pacienteRepository.save(pacienteEntity);
+  }
 }
