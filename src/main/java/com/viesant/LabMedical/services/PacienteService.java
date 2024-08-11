@@ -78,4 +78,14 @@ public class PacienteService {
 
     return pacienteRepository.save(pacienteEntity);
   }
+
+  public void deletaPacientePorId(Long id) {
+    PacienteEntity pacienteEntity =
+            pacienteRepository
+                    .findById(id)
+                    .orElseThrow(() -> new EntityNotFoundException("Paciente não encontrado com id " + id));
+    pacienteRepository.deleteById(id);
+
+    return;
+  }
 }

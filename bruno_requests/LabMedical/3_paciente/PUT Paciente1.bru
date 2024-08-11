@@ -4,8 +4,8 @@ meta {
   seq: 4
 }
 
-post {
-  url: http://localhost:8080/pacientes
+put {
+  url: http://localhost:8080/pacientes/1
   body: json
   auth: bearer
 }
@@ -17,7 +17,7 @@ auth:bearer {
 body:json {
   {
     "dadosPessoais": {
-      "nome": "Maria Oliveira",
+      "nome": "LALALA",
       "genero": "Feminino",
       "dataNascimento": "1990-06-15",
       "cpf": "321.456.789-00",
