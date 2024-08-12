@@ -1,0 +1,51 @@
+meta {
+  name: create Paciente2
+  type: http
+  seq: 2
+}
+
+post {
+  url: http://localhost:8080/pacientes
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{accessToken}}
+}
+
+body:json {
+  {
+    "dadosPessoais": {
+      "nome": "João Silva",
+      "genero": "Masculino",
+      "dataNascimento": "1985-11-22",
+      "cpf": "987.654.321-00",
+      "rg": "98.765.432-1",
+      "estadoCivil": "Solteiro",
+      "telefone": "(21) 99999-8888",
+      "email": "joao.silva@example.com",
+      "naturalidade": "Rio de Janeiro"
+    },
+    "saude": {
+      "telefoneContato": "(21) 98888-7777",
+      "alergias": ["Poeira"],
+      "cuidados": ["Evitar ambientes com fumaça"],
+      "nomeConvenio": "Unimed",
+      "numeroConvenio": "123456789",
+      "validadeConvenio": "2025-05-31"
+    },
+    "endereco": {
+      "cep": "20000-000",
+      "cidade": "Rio de Janeiro",
+      "estado": "RJ",
+      "logradouro": "Avenida Atlântica",
+      "numero": "2000",
+      "complemento": "Bloco A, Apt 502",
+      "bairro": "Copacabana",
+      "pontoReferencia": "Próximo ao Hotel Copacabana Palace"
+    },
+    "usuarioId": 5
+  }
+  
+}

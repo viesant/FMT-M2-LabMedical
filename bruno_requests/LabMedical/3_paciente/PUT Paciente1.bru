@@ -1,0 +1,50 @@
+meta {
+  name: PUT Paciente1
+  type: http
+  seq: 4
+}
+
+put {
+  url: http://localhost:8080/pacientes/1
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{accessToken}}
+}
+
+body:json {
+  {
+    "dadosPessoais": {
+      "nome": "LALALA",
+      "genero": "Feminino",
+      "dataNascimento": "1990-06-15",
+      "cpf": "321.456.789-00",
+      "rg": "12.345.678-9",
+      "estadoCivil": "Casada",
+      "telefone": "(11) 91234-5678",
+      "email": "maria.oliveira@example.com",
+      "naturalidade": "São Paulo"
+    },
+    "saude": {
+      "telefoneContato": "(11) 99887-7665",
+      "alergias": ["Amendoim", "Laticínios"],
+      "cuidados": ["Evitar alimentos com glúten"],
+      "nomeConvenio": "Bradesco Saúde",
+      "numeroConvenio": "987654321",
+      "validadeConvenio": "2024-12-31"
+    },
+    "endereco": {
+      "cep": "01000-000",
+      "cidade": "São Paulo",
+      "estado": "SP",
+      "logradouro": "Rua Exemplo",
+      "numero": "100",
+      "complemento": "Apto 101",
+      "bairro": "Centro",
+      "pontoReferencia": "Próximo ao Teatro Municipal"
+    },
+    "usuarioId": 3
+  }
+}

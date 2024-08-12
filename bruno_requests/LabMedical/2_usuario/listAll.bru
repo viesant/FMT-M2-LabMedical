@@ -1,7 +1,7 @@
 meta {
-  name: create Medico
+  name: listAll
   type: http
-  seq: 2
+  seq: 4
 }
 
 post {
@@ -16,11 +16,11 @@ auth:bearer {
 
 body:json {
   {
-    "nome": "Dr. Ricardo",
-    "email": "medico1@viesant.com",
+    "nome": "paciente2",
+    "email": "paciente2@viesant.com",
     "dataNascimento": "1990-05-15",
-    "cpf": "000.111.000-00",
+    "cpf": "000.000.222-00",
     "password": "1234",
-    "perfil": "MEDICO"
+    "perfil": "PACIENTE"
   }
 }

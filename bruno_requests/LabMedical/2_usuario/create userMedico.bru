@@ -1,7 +1,7 @@
 meta {
-  name: create Admin
+  name: create userMedico
   type: http
-  seq: 1
+  seq: 2
 }
 
 post {
@@ -16,11 +16,11 @@ auth:bearer {
 
 body:json {
   {
-    "nome": "Ricardo",
-    "email": "admin1@viesant.com",
-    "dataNascimento": "1987-03-17",
-    "cpf": "111.000.000-00",
+    "nome": "Dr. Ricardo",
+    "email": "medico1@viesant.com",
+    "dataNascimento": "1990-05-15",
+    "cpf": "000.111.000-00",
     "password": "1234",
-    "perfil": "ADMIN"
+    "perfil": "MEDICO"
   }
 }

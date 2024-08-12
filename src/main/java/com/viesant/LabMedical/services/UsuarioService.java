@@ -6,6 +6,8 @@ import com.viesant.LabMedical.entities.PerfilEntity;
 import com.viesant.LabMedical.entities.UsuarioEntity;
 import com.viesant.LabMedical.repositories.PerfilRepository;
 import com.viesant.LabMedical.repositories.UsuarioRepository;
+
+import java.util.List;
 import java.util.Set;
 import lombok.AllArgsConstructor;
 import org.springframework.dao.DuplicateKeyException;
@@ -51,5 +53,9 @@ public class UsuarioService {
 
 
     return map(usuarioRepository.save(target));
+  }
+
+  public List<UsuarioEntity> listaUsuarios() {
+    return usuarioRepository.findAll();
   }
 }
