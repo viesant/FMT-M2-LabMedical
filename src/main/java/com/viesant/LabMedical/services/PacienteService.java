@@ -94,49 +94,17 @@ public class PacienteService {
             .orElseThrow(() -> new EntityNotFoundException("Paciente não encontrado com id " + id));
     pacienteRepository.deleteById(id);
   }
-//
-//  public Page<PacienteResponse> listaPacientes(PacienteGetRequest filtros, Pageable paginacao) {
-//    String filtroNome = filtros.nome() != null ? filtros.nome() : "";
-//    String filtroTelefone = filtros.telefone() != null ? filtros.telefone() : "";
-//    String filtroEmail = filtros.email() != null ? filtros.email() : "";
-//
-//    Page<PacienteEntity> pacientesPage =
-//        pacienteRepository
-//            .findByDadosPessoaisNomeContainingIgnoreCaseAndDadosPessoaisTelefoneContainingIgnoreCaseAndDadosPessoaisEmailContainingIgnoreCase(
-//                filtroNome, filtroTelefone, filtroEmail, paginacao);
-//
-//    return map(pacientesPage);
-//  }
 
   public Page<PacienteResponse> listaPaginada(Pageable paginacao) {
 
-    return
-            pacienteRepository.findAll(PageRequest.of(paginacao.getPageNumber(), paginacao.getPageSize()))
-                    .map(
-                            paciente-> new PacienteResponse(
-                                    paciente.getDadosPessoais().getNome(),
-                                    55,
-                                    paciente.getDadosPessoais().getTelefone(),
-                                    paciente.getSaude().getNomeConvenio()
-                                    )
-                    );
-
-//                    .stream()
-//                   .map(page -> new PacienteResponse(
-//                           page.getDadosPessoais().getNome(),
-//                           55,
-//                           page.getDadosPessoais().getTelefone(),
-//                           page.getSaude().getNomeConvenio()
-//                   ));
+    return pacienteRepository
+        .findAll(PageRequest.of(paginacao.getPageNumber(), paginacao.getPageSize()))
+        .map(
+            paciente ->
+                new PacienteResponse(
+                    paciente.getDadosPessoais().getNome(),
+                    55,
+                    paciente.getDadosPessoais().getTelefone(),
+                    paciente.getSaude().getNomeConvenio()));
   }
-  //  public Page<PacienteResponse> listaPacientes(PacienteGetRequest filtros, Pageable paginacao) {
-  //
-  //    String filtroNome = filtros.nome() != null ? filtros.nome() : "";
-  //    String filtroTelefone = filtros.telefone() != null ? filtros.telefone() : "";
-  //    String filtroEmail = filtros.email() != null ? filtros.telefone() : "";
-  //    return map(
-  //        pacienteRepository
-  //            .findByNomeContainingIgnoreCaseAndTelefoneContainingAndEmailContainingIgnoreCase(
-  //                filtroNome, filtroTelefone, filtroEmail, paginacao));
-  //  }
 }

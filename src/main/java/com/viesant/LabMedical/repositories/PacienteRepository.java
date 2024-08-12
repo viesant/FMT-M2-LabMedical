@@ -16,12 +16,6 @@ public interface PacienteRepository extends JpaRepository<PacienteEntity, Long> 
 
   Page<PacienteEntity> findByDadosPessoaisNomeContainingIgnoreCaseAndDadosPessoaisTelefoneContainingIgnoreCaseAndDadosPessoaisEmailContainingIgnoreCase(
           String nome, String telefone, String email, Pageable pageable);
-//  Page<PacienteEntity>
-//      findByNomeContainingIgnoreCaseAndTelefoneContainingAndEmailContainingIgnoreCase(
-//          String nome, String telefone, String email, Pageable pageable);
-  //  Page<PacienteEntity>
-  // findByNomeContainingIgnoreCaseAndTelefoneContainingAndEmailContainingIgnoreCase(
-  //          String nome, String telefone, String email, Pageable paginacao
-  //  );
+
 
 }

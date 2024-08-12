@@ -1,0 +1,27 @@
+meta {
+  name: PUT ConsultaId
+  type: http
+  seq: 4
+}
+
+put {
+  url: http://localhost:8080/consultas/1
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{accessToken}}
+}
+
+body:json {
+  {
+    "motivoConsulta": "ddsfdfsdfsna para check-up geral",
+    "dataConsulta": "2024-08-15",
+    "horarioConsulta": "14:30:00",
+    "descricaoProblema": "Paciente relata cansaço constante e dificuldade para dormir. Observa-se também uma leve dor no peito que se intensifica durante a noite.",
+    "medicacaoReceitada": "Paracetamol 500mg a cada 8 horas em caso de dor",
+    "dosagemPrecaucoes": "Tomar 1 comprimido a cada 8 horas. Não exceder 4 doses diárias. Evitar uso concomitante com bebidas alcoólicas.",
+    "pacienteId": 1
+  }
+}
