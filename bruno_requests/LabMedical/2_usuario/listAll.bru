@@ -1,0 +1,26 @@
+meta {
+  name: listAll
+  type: http
+  seq: 4
+}
+
+post {
+  url: http://localhost:8080/usuarios
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{accessToken}}
+}
+
+body:json {
+  {
+    "nome": "paciente2",
+    "email": "paciente2@viesant.com",
+    "dataNascimento": "1990-05-15",
+    "cpf": "000.000.222-00",
+    "password": "1234",
+    "perfil": "PACIENTE"
+  }
+}

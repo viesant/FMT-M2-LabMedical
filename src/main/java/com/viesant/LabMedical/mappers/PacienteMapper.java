@@ -5,6 +5,8 @@ import com.viesant.LabMedical.DTO.PacienteResponse;
 import com.viesant.LabMedical.entities.PacienteEntity;
 import org.springframework.data.domain.Page;
 
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.List;
 
 public class PacienteMapper {
@@ -47,18 +49,18 @@ public class PacienteMapper {
     return target;
   }
 
-  public static PacienteResponse map(PacienteEntity source){
-    PacienteResponse target = new PacienteResponse(
-            source.getDadosPessoais().getNome(),
-            37,
-            //source.getDadosPessoais().getDataNascimento(),
-            source.getDadosPessoais().getTelefone(),
-            source.getSaude().getNomeConvenio()
-            );
-    return target;
-  }
-
-  public static Page<PacienteResponse> map (Page<PacienteEntity> source){
-    return source.map(PacienteMapper::map);
-  }
+//  public static PacienteResponse map(PacienteEntity source){
+//    PacienteResponse target = new PacienteResponse(
+//            source.getDadosPessoais().getNome(),
+//            Period.between(source.getDadosPessoais().getDataNascimento(), LocalDate.now()).getYears(),
+//            //source.getDadosPessoais().getDataNascimento(),
+//            source.getDadosPessoais().getTelefone(),
+//            source.getSaude().getNomeConvenio()
+//            );
+//    return target;
+//  }
+//
+//  public static Page<PacienteResponse> map (Page<PacienteEntity> source){
+//    return source.map(PacienteMapper::map);
+//  }
 }

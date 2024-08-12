@@ -11,9 +11,12 @@ import com.viesant.LabMedical.entities.UsuarioEntity;
 import com.viesant.LabMedical.repositories.PacienteRepository;
 import com.viesant.LabMedical.repositories.UsuarioRepository;
 import jakarta.persistence.EntityNotFoundException;
+
+import java.util.List;
 import java.util.Optional;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.stereotype.Service;
@@ -91,15 +94,49 @@ public class PacienteService {
             .orElseThrow(() -> new EntityNotFoundException("Paciente não encontrado com id " + id));
     pacienteRepository.deleteById(id);
   }
+//
+//  public Page<PacienteResponse> listaPacientes(PacienteGetRequest filtros, Pageable paginacao) {
+//    String filtroNome = filtros.nome() != null ? filtros.nome() : "";
+//    String filtroTelefone = filtros.telefone() != null ? filtros.telefone() : "";
+//    String filtroEmail = filtros.email() != null ? filtros.email() : "";
+//
+//    Page<PacienteEntity> pacientesPage =
+//        pacienteRepository
+//            .findByDadosPessoaisNomeContainingIgnoreCaseAndDadosPessoaisTelefoneContainingIgnoreCaseAndDadosPessoaisEmailContainingIgnoreCase(
+//                filtroNome, filtroTelefone, filtroEmail, paginacao);
+//
+//    return map(pacientesPage);
+//  }
 
-  public Page<PacienteResponse> listaPacientes(PacienteGetRequest filtros, Pageable paginacao) {
+  public Page<PacienteResponse> listaPaginada(Pageable paginacao) {
 
-    String filtroNome = filtros.nome() != null ? filtros.nome() : "";
-    String filtroTelefone = filtros.telefone() != null ? filtros.telefone() : "";
-    String filtroEmail = filtros.email() != null ? filtros.telefone() : "";
-    return map(
-        pacienteRepository
-            .findByNomeContainingIgnoreCaseAndTelefoneContainingAndEmailContainingIgnoreCase(
-                filtroNome, filtroTelefone, filtroEmail, paginacao));
+    return
+            pacienteRepository.findAll(PageRequest.of(paginacao.getPageNumber(), paginacao.getPageSize()))
+                    .map(
+                            paciente-> new PacienteResponse(
+                                    paciente.getDadosPessoais().getNome(),
+                                    55,
+                                    paciente.getDadosPessoais().getTelefone(),
+                                    paciente.getSaude().getNomeConvenio()
+                                    )
+                    );
+
+//                    .stream()
+//                   .map(page -> new PacienteResponse(
+//                           page.getDadosPessoais().getNome(),
+//                           55,
+//                           page.getDadosPessoais().getTelefone(),
+//                           page.getSaude().getNomeConvenio()
+//                   ));
   }
+  //  public Page<PacienteResponse> listaPacientes(PacienteGetRequest filtros, Pageable paginacao) {
+  //
+  //    String filtroNome = filtros.nome() != null ? filtros.nome() : "";
+  //    String filtroTelefone = filtros.telefone() != null ? filtros.telefone() : "";
+  //    String filtroEmail = filtros.email() != null ? filtros.telefone() : "";
+  //    return map(
+  //        pacienteRepository
+  //            .findByNomeContainingIgnoreCaseAndTelefoneContainingAndEmailContainingIgnoreCase(
+  //                filtroNome, filtroTelefone, filtroEmail, paginacao));
+  //  }
 }
