@@ -49,18 +49,5 @@ public class PacienteMapper {
     return target;
   }
 
-//  public static PacienteResponse map(PacienteEntity source){
-//    PacienteResponse target = new PacienteResponse(
-//            source.getDadosPessoais().getNome(),
-//            Period.between(source.getDadosPessoais().getDataNascimento(), LocalDate.now()).getYears(),
-//            //source.getDadosPessoais().getDataNascimento(),
-//            source.getDadosPessoais().getTelefone(),
-//            source.getSaude().getNomeConvenio()
-//            );
-//    return target;
-//  }
-//
-//  public static Page<PacienteResponse> map (Page<PacienteEntity> source){
-//    return source.map(PacienteMapper::map);
-//  }
+
 }
